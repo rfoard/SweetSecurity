@@ -40,7 +40,7 @@ sudo rm -rf bro-2.4.1/
 
 #Install Critical Stack
 echo "Installing Critical Stack Agent"
-sudo wget https://intel.criticalstack.com/client/critical-stack-intel-arm.deb
+sudo wget --no-check-certificate https://intel.criticalstack.com/client/critical-stack-intel-arm.deb
 sudo dpkg -i critical-stack-intel-arm.deb
 sudo -u critical-stack critical-stack-intel api $cs_api 
 sudo rm critical-stack-intel-arm.deb
@@ -71,9 +71,9 @@ cd /home/pi
 sudo rm -rf jffi/
 sudo update-rc.d logstash defaults
 sudo /opt/logstash/bin/plugin install logstash-filter-translate
-sudo cp SweetSecurity/logstash.conf /etc/logstash/conf.d
+sudo cp ./logstash.conf /etc/logstash/conf.d
 sudo mkdir /etc/logstash/custom_patterns
-sudo cp SweetSecurity/bro.rule /etc/logstash/custom_patterns
+sudo cp ./bro.rule /etc/logstash/custom_patterns
 sudo mkdir /etc/logstash/translate
 
 #Install Kibana
@@ -89,14 +89,14 @@ sudo mv /opt/kibana/node/bin/npm /opt/kibana/node/bin/npm.orig
 sudo ln -s /usr/local/bin/node /opt/kibana/node/bin/node
 sudo ln -s /usr/local/bin/npm /opt/kibana/node/bin/npm
 sudo rm node_latest_armhf.deb
-sudo cp SweetSecurity/init.d/kibana /etc/init.d
+sudo cp ./init.d/kibana /etc/init.d/kibana
 sudo chmod 755 /etc/init.d/kibana
 sudo update-rc.d kibana defaults
 
 #Configure Sweet Security Scripts
 sudo mkdir /opt/SweetSecurity
-sudo cp SweetSecurity/pullMaliciousIP.py /opt/SweetSecurity/
-sudo cp SweetSecurity/pullTorIP.py /opt/SweetSecurity/
+sudo cp ./pullMaliciousIP.py /opt/SweetSecurity/
+sudo cp ./pullTorIP.py /opt/SweetSecurity/
 #Run scripts for the first time
 sudo python /opt/SweetSecurity/pullTorIP.py
 sudo python /opt/SweetSecurity/pullMaliciousIP.py
@@ -109,8 +109,8 @@ sudo sed -i -- "s/EMAIL_PASS/"$emailPwd"/g" /opt/logstash/logstash.conf
 
 
 cd /home/pi
-sudo cp SweetSecurity/networkDiscovery.py /opt/SweetSecurity/networkDiscovery.py
-sudo cp SweetSecurity/SweetSecurityDB.py /opt/SweetSecurity/SweetSecurityDB.py
+sudo cp ./networkDiscovery.py /opt/SweetSecurity/networkDiscovery.py
+sudo cp ./SweetSecurityDB.py /opt/SweetSecurity/SweetSecurityDB.py
 #Configure Network Discovery Scripts
 sudo sed -i -- "s/SMTP_HOST/"$smtpHost"/g" /opt/SweetSecurity/networkDiscovery.py
 sudo sed -i -- "s/SMTP_PORT/"$smtpPort"/g" /opt/SweetSecurity/networkDiscovery.py
